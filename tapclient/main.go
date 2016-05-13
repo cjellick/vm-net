@@ -13,9 +13,9 @@ import (
 	flag "github.com/ogier/pflag"
 )
 
-var sock *string = flag.String("socket", "/var/run/rancher/tap.sock", "Socket to use")
-var iface *string = flag.String("iface", "eth0", "Interface to get mac from")
-var mac *string = flag.String("mac", "", "Mac address to request")
+var sock = flag.String("socket", "/var/run/rancher/tap.sock", "Socket to use")
+var iface = flag.String("iface", "eth0", "Interface to get mac from")
+var mac = flag.String("mac", "", "Mac address to request")
 
 func main() {
 	log.Fatal(run())

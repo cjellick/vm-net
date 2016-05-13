@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	metadataUrl *string = flag.String("metadata", "http://rancher-metadata/2015-12-19", "Metadata URL")
+	metadataURL = flag.String("metadata", "http://rancher-metadata/2015-12-19", "Metadata URL")
 )
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 }
 
 func run() error {
-	m, err := metadata.NewClientAndWait(*metadataUrl)
+	m, err := metadata.NewClientAndWait(*metadataURL)
 	if err != nil {
 		return err
 	}
@@ -48,14 +48,14 @@ func run() error {
 	optsfile.Close()
 	defer os.Remove(optsfile.Name())
 
-	cmd, err := launchDnsMasq(optsfile.Name(), hostsconf.Name(), flag.Args())
+	cmd, err := launchDNSMasq(optsfile.Name(), hostsconf.Name(), flag.Args())
 	if err != nil {
 		return err
 	}
 
 	first := true
 	m.OnChange(1, func(version string) {
-		if err := writeDnsMasq(optsfile.Name(), hostsconf.Name(), host.UUID, m); err != nil {
+		if err := writeDNSMasq(optsfile.Name(), hostsconf.Name(), host.UUID, m); err != nil {
 			log.Printf("Failed to generate config: %v", err)
 			return
 		}
@@ -73,7 +73,7 @@ func run() error {
 	return nil
 }
 
-func launchDnsMasq(opts, hosts string, extraArgs []string) (*exec.Cmd, error) {
+func launchDNSMasq(opts, hosts string, extraArgs []string) (*exec.Cmd, error) {
 	args := []string{"-d", "--dhcp-range=10.42.0.1,static",
 		fmt.Sprintf("--dhcp-hostsfile=%s", hosts),
 		fmt.Sprintf("--dhcp-optsfile=%s", opts)}
@@ -96,7 +96,7 @@ func launchDnsMasq(opts, hosts string, extraArgs []string) (*exec.Cmd, error) {
 	return cmd, nil
 }
 
-func writeDnsMasq(optsfile, hostsfile, host string, client *metadata.Client) error {
+func writeDNSMasq(optsfile, hostsfile, host string, client *metadata.Client) error {
 	containers, err := client.GetContainers()
 	if err != nil {
 		return err

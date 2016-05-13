@@ -13,8 +13,8 @@ import (
 	"github.com/vishvananda/netlink"
 )
 
-var sock *string = flag.String("socket", "/var/run/rancher/tap.sock", "Socket to use")
-var bridge *string = flag.String("bridge", "docker0", "Bridge to add tap devices to")
+var sock = flag.String("socket", "/var/run/rancher/tap.sock", "Socket to use")
+var bridge = flag.String("bridge", "docker0", "Bridge to add tap devices to")
 
 func main() {
 	log.Fatal(run())
