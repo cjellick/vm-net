@@ -1,0 +1,23 @@
+import:
+- package: github.com/ogier/pflag
+  version: 45c278ab3607870051a2ea9040bb85fcb8557481
+- package: github.com/songgao/water
+  version: f87d2289c2a9fd8877962d632757e87908da6fd0
+- package: github.com/j-keck/arping
+  version: aa3681d07d8596764629576fddd9b489b211150b
+- package: github.com/vishvananda/netlink
+  version: f116a3048ac2560afd2cec21c82bafa10762578c
+- package: github.com/vishvananda/netns
+  version: 8ba1072b58e0c2a240eb5f6120165c7776c3e7b8
+- package: github.com/ftrvxmtrx/fd
+  version: c6d800382fff6dc1412f34269f71b7f83bd059ad
+- package: github.com/ryanuber/go-glob
+  version: 572520ed46dbddaed19ea3d9541bdd0494163693
+- package: github.com/rancher/go-rancher-metadata
+  version: 930aa73750d89be482590dcb2809ce36ba30effe
+- package: github.com/rancher/netconf
+  version: 43bd602971bfed4d41cdcc1ef9cffa204ad28c3f
+- package: github.com/Sirupsen/logrus
+  version: cd7d1bbe41066b6c1f19780f895901052150a575
+- package: github.com/flynn/go-shlex
+  version: 3f9db97f856818214da2e1057f8ad84803971cff
