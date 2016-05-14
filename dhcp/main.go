@@ -123,9 +123,6 @@ func writeDNSMasq(optsfile, hostsfile, host string, client *metadata.Client) err
 		}
 
 		mac := data["mac"].(string)
-		if len(mac) > 3 {
-			mac = "04" + mac[2:]
-		}
 		ip := data["local-ipv4"]
 		hostname := data["hostname"]
 		gateway = data["local-ipv4-gateway"]

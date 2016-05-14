@@ -14,8 +14,6 @@ import (
 )
 
 var sock = flag.String("socket", "/var/run/rancher/tap.sock", "Socket to use")
-var iface = flag.String("iface", "eth0", "Interface to get mac from")
-var mac = flag.String("mac", "", "Mac address to request")
 
 func main() {
 	log.Fatal(run())
@@ -29,24 +27,6 @@ func run() error {
 		return err
 	}
 	unixConn := conn.(*net.UnixConn)
-
-	addr := *mac
-	if addr == "" {
-		i, err := net.InterfaceByName(*iface)
-		if err != nil {
-			return err
-		}
-
-		addr = i.HardwareAddr.String()
-	}
-
-	addr = "06" + addr[2:]
-
-	log.Printf("Requesting MAC address %s", addr)
-
-	if _, err := unixConn.Write([]byte(addr)); err != nil {
-		return err
-	}
 
 	files, err := fd.Get(unixConn, 1, []string{"tap"})
 	if err != nil {

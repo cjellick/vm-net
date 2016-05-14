@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"net"
 	"os"
 	"time"
@@ -17,6 +18,7 @@ var sock = flag.String("socket", "/var/run/rancher/tap.sock", "Socket to use")
 var bridge = flag.String("bridge", "docker0", "Bridge to add tap devices to")
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	log.Fatal(run())
 }
 
@@ -45,22 +47,22 @@ func run() error {
 	}
 }
 
+func randomMac() net.HardwareAddr {
+	hw := make(net.HardwareAddr, 6)
+	hw[0] = 0x02
+	hw[1] = 0x42
+	rand.Read(hw[2:])
+	return hw
+}
+
 func serve(conn *net.UnixConn) error {
 	defer conn.Close()
 
 	conn.SetReadDeadline(time.Now().Add(2 * time.Second))
 
-	buf := make([]byte, 17)
-	_, err := conn.Read(buf)
-	if err != nil {
-		return err
-	}
+	hw := randomMac()
 
-	log.Printf("Creating tap device for %s", buf)
-	addr, err := net.ParseMAC(string(buf))
-	if err != nil {
-		return err
-	}
+	log.Printf("Creating tap device for %s", hw.String())
 
 	iface, err := water.NewTAP("")
 	if err != nil {
@@ -75,7 +77,7 @@ func serve(conn *net.UnixConn) error {
 		return err
 	}
 
-	if err := netlink.LinkSetHardwareAddr(link, addr); err != nil {
+	if err := netlink.LinkSetHardwareAddr(link, randomMac()); err != nil {
 		return err
 	}
 
